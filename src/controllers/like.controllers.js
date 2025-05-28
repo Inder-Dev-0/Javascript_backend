@@ -35,7 +35,7 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
     const userId = req.user?._id
 
     if (!isValidObjectId(commentId)) {
-        throw new ApiError(400, "Video id is required")
+        throw new ApiError(400, "Comment id is required")
     }
 
     const existingLike = await Like.findOne({ comment: commentId, likedBy: userId });
@@ -60,7 +60,7 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
     const userId = req.user?._id
 
     if (!isValidObjectId(tweetId)) {
-        throw new ApiError(400, "Video id is required")
+        throw new ApiError(400, "Tweet id is required")
     }
 
     const existingLike = await Like.findOne({ tweet: tweetId, likedBy: userId });
@@ -68,10 +68,10 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
     let message = "";
     if (existingLike) {
         await Like.findByIdAndDelete(existingLike._id);
-        message = "Comment unliked";
+        message = "Tweet unliked";
     } else {
         await Like.create({ tweet: tweetId, likedBy: userId });
-        message = "Comment liked";
+        message = "Tweet liked";
     }
 
     return res
@@ -84,7 +84,7 @@ const getLikedVideos = asyncHandler(async (req, res) => {
     //TODO: get all liked videos
     const userId = req.user?._id
 
-    if (!isValidObjectId(videoId)) {
+    if (!isValidObjectId(userId)) {
         throw new ApiError(400, "Video id is required")
     }
 
